@@ -13,10 +13,22 @@ export default function Home() {
   const [isTurning, setIsTurning] = useState(false);
   const [turnDirection, setTurnDirection] = useState<"next" | "prev" | null>(null);
   const [targetPage, setTargetPage] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const totalPages = 6;
   const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+  const touchEndY = useRef<number | null>(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const triggerPageTurn = (direction: "next" | "prev") => {
     if (isTurning) return;
@@ -68,26 +80,39 @@ export default function Home() {
   // Touch Swipe Handlers for mobile
   const handleTouchStart = (e: TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
+    touchStartY.current = e.targetTouches[0].clientY;
   };
 
   const handleTouchMove = (e: TouchEvent) => {
     touchEndX.current = e.targetTouches[0].clientX;
+    touchEndY.current = e.targetTouches[0].clientY;
   };
 
   const handleTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) return;
-    const distance = touchStartX.current - touchEndX.current;
-    const isSwipeLeft = distance > 40;
-    const isSwipeRight = distance < -40;
+    if (
+      touchStartX.current === null ||
+      touchEndX.current === null ||
+      touchStartY.current === null ||
+      touchEndY.current === null
+    ) {
+      return;
+    }
+    const deltaX = touchStartX.current - touchEndX.current;
+    const deltaY = touchStartY.current - touchEndY.current;
 
-    if (isSwipeLeft) {
-      triggerPageTurn("next");
-    } else if (isSwipeRight) {
-      triggerPageTurn("prev");
+    // Ignore vertical scrolling gestures or micro accidental touches
+    if (Math.abs(deltaY) < Math.abs(deltaX) && Math.abs(deltaX) > 40) {
+      if (deltaX > 0) {
+        triggerPageTurn("next");
+      } else {
+        triggerPageTurn("prev");
+      }
     }
 
     touchStartX.current = null;
     touchEndX.current = null;
+    touchStartY.current = null;
+    touchEndY.current = null;
   };
 
   const getChapterIndicator = () => {
@@ -119,7 +144,7 @@ export default function Home() {
           onTouchEnd={handleTouchEnd}
         >
           {/* Spine Crease Line */}
-          {currentPage > 0 || isTurning ? (
+          {(currentPage > 0 || isTurning) && !isMobile ? (
             <div className="book-spine-line" />
           ) : null}
 
@@ -130,141 +155,188 @@ export default function Home() {
             ) : (
               /* 3D Page Turn Render Stage */
               <div className="w-full h-full relative book-3d-stage">
-                {/* Underneath Spread */}
-                <div className="absolute inset-0 w-full h-full flex">
-                  {turnDirection === "next" ? (
-                    <>
-                      {/* Left side: current page left */}
-                      <div className="w-1/2 h-full overflow-hidden relative">
-                        {pages[currentPage]}
-                      </div>
-                      {/* Right side: target page right */}
-                      <div className="w-1/2 h-full overflow-hidden relative">
-                        {pages[targetPage!]}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {/* Left side: target page left */}
-                      <div className="w-1/2 h-full overflow-hidden relative">
-                        {pages[targetPage!]}
-                      </div>
-                      {/* Right side: current page right */}
-                      <div className="w-1/2 h-full overflow-hidden relative">
-                        {pages[currentPage]}
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                {/* Turning Flipper Leaf */}
-                <div
-                  className={`book-flipper-leaf ${
-                    turnDirection === "next"
-                      ? "book-flipper-right"
-                      : "book-flipper-left"
-                  }`}
-                  style={{
-                    transform:
-                      turnDirection === "next"
-                        ? "rotateY(-180deg)"
-                        : "rotateY(180deg)",
-                    transition:
-                      "transform 700ms cubic-bezier(0.645, 0.045, 0.355, 1.000)",
-                  }}
-                >
-                  {/* Front Face of Turning Page */}
-                  <div className="book-flipper-face">
-                    <div
-                      className="w-[200%] h-full relative"
-                      style={{
-                        marginLeft: turnDirection === "next" ? "-100%" : "0%",
-                      }}
-                    >
-                      {pages[currentPage]}
-                    </div>
-                    <div className="flip-shadow-front opacity-60" />
-                  </div>
-
-                  {/* Back Face of Turning Page */}
-                  <div className="book-flipper-face book-flipper-back">
-                    <div
-                      className="w-[200%] h-full relative"
-                      style={{
-                        marginLeft: turnDirection === "next" ? "0%" : "-100%",
-                      }}
-                    >
+                {isMobile ? (
+                  /* MOBILE 3D PAGE TURN: Full Physical Storybook Sheet Flip */
+                  <>
+                    {/* Underneath Target Page Sheet */}
+                    <div className="absolute inset-0 w-full h-full overflow-hidden">
                       {pages[targetPage!]}
                     </div>
-                    <div className="flip-shadow-back opacity-60" />
-                  </div>
-                </div>
+
+                    {/* Flipping 3D Full Sheet */}
+                    <div
+                      className="absolute inset-0 w-full h-full"
+                      style={{
+                        transformStyle: "preserve-3d",
+                        transformOrigin: "left center",
+                        transform:
+                          turnDirection === "next"
+                            ? "rotateY(-180deg)"
+                            : "rotateY(0deg)",
+                        transition:
+                          "transform 700ms cubic-bezier(0.645, 0.045, 0.355, 1.000)",
+                        zIndex: 30,
+                      }}
+                    >
+                      {/* Front Face */}
+                      <div className="book-flipper-face">
+                        {pages[turnDirection === "next" ? currentPage : targetPage!]}
+                        <div className="flip-shadow-front opacity-50" />
+                      </div>
+
+                      {/* Back Face */}
+                      <div className="book-flipper-face book-flipper-back">
+                        {pages[turnDirection === "next" ? targetPage! : currentPage]}
+                        <div className="flip-shadow-back opacity-50" />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  /* DESKTOP 3D PAGE TURN: Dual Spread Spine Flip */
+                  <>
+                    {/* Underneath Spread */}
+                    <div className="absolute inset-0 w-full h-full flex">
+                      {turnDirection === "next" ? (
+                        <>
+                          <div className="w-1/2 h-full overflow-hidden relative">
+                            {pages[currentPage]}
+                          </div>
+                          <div className="w-1/2 h-full overflow-hidden relative">
+                            {pages[targetPage!]}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-1/2 h-full overflow-hidden relative">
+                            {pages[targetPage!]}
+                          </div>
+                          <div className="w-1/2 h-full overflow-hidden relative">
+                            {pages[currentPage]}
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Turning Flipper Leaf */}
+                    <div
+                      className={`book-flipper-leaf ${
+                        turnDirection === "next"
+                          ? "book-flipper-right"
+                          : "book-flipper-left"
+                      }`}
+                      style={{
+                        transform:
+                          turnDirection === "next"
+                            ? "rotateY(-180deg)"
+                            : "rotateY(180deg)",
+                        transition:
+                          "transform 700ms cubic-bezier(0.645, 0.045, 0.355, 1.000)",
+                      }}
+                    >
+                      {/* Front Face */}
+                      <div className="book-flipper-face">
+                        <div
+                          className="w-[200%] h-full relative"
+                          style={{
+                            marginLeft: turnDirection === "next" ? "-100%" : "0%",
+                          }}
+                        >
+                          {pages[currentPage]}
+                        </div>
+                        <div className="flip-shadow-front opacity-60" />
+                      </div>
+
+                      {/* Back Face */}
+                      <div className="book-flipper-face book-flipper-back">
+                        <div
+                          className="w-[200%] h-full relative"
+                          style={{
+                            marginLeft: turnDirection === "next" ? "0%" : "-100%",
+                          }}
+                        >
+                          {pages[targetPage!]}
+                        </div>
+                        <div className="flip-shadow-back opacity-60" />
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
         </div>
 
-        {/* External Integrated Navigation Controls */}
-        <div className="w-full max-w-5xl flex items-center justify-between pt-3 sm:pt-4 px-2 z-20">
-          {/* Left Arrow Button */}
-          <button
-            onClick={() => triggerPageTurn("prev")}
-            disabled={currentPage === 0 || isTurning}
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1A1817]/85 text-[#F5F0E6] flex items-center justify-center backdrop-blur-md border border-white/15 transition-all duration-300 cursor-pointer ${
-              currentPage === 0
-                ? "opacity-0 pointer-events-none"
-                : "opacity-85 hover:opacity-100 hover:scale-105 active:scale-95 shadow-md"
-            }`}
-            aria-label="Previous Chapter"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        {/* External Integrated Navigation Controls & Creator Credit */}
+        <div className="w-full max-w-5xl pt-3 sm:pt-4 px-2 z-20">
+          <div className="flex items-center justify-between">
+            {/* Left Arrow Button */}
+            <button
+              onClick={() => triggerPageTurn("prev")}
+              disabled={currentPage === 0 || isTurning}
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1A1817]/85 text-[#F5F0E6] flex items-center justify-center backdrop-blur-md border border-white/15 transition-all duration-300 cursor-pointer ${
+                currentPage === 0
+                  ? "opacity-0 pointer-events-none"
+                  : "opacity-85 hover:opacity-100 hover:scale-105 active:scale-95 shadow-md"
+              }`}
+              aria-label="Previous Chapter"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.75}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.75}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
 
-          {/* Editorial Page Indicator */}
-          <div className="flex items-center space-x-3 sm:space-x-4 bg-[#1A1817]/85 text-[#F5F0E6] backdrop-blur-md px-4 sm:px-5 py-2 rounded-full border border-white/15 text-[9px] sm:text-xs tracking-[0.25em] font-sans uppercase shadow-md">
-            <span>{getChapterIndicator()}</span>
+            {/* Editorial Page Indicator */}
+            <div className="flex items-center space-x-3 sm:space-x-4 bg-[#1A1817]/85 text-[#F5F0E6] backdrop-blur-md px-4 sm:px-5 py-2 rounded-full border border-white/15 text-[9px] sm:text-xs tracking-[0.25em] font-sans uppercase shadow-md">
+              <span>{getChapterIndicator()}</span>
+            </div>
+
+            {/* Right Arrow Button */}
+            <button
+              onClick={() => triggerPageTurn("next")}
+              disabled={currentPage === totalPages - 1 || isTurning}
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1A1817]/85 text-[#F5F0E6] flex items-center justify-center backdrop-blur-md border border-white/15 transition-all duration-300 cursor-pointer ${
+                currentPage === totalPages - 1
+                  ? "opacity-0 pointer-events-none"
+                  : "opacity-85 hover:opacity-100 hover:scale-105 active:scale-95 shadow-md"
+              }`}
+              aria-label="Next Chapter"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.75}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
 
-          {/* Right Arrow Button */}
-          <button
-            onClick={() => triggerPageTurn("next")}
-            disabled={currentPage === totalPages - 1 || isTurning}
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1A1817]/85 text-[#F5F0E6] flex items-center justify-center backdrop-blur-md border border-white/15 transition-all duration-300 cursor-pointer ${
-              currentPage === totalPages - 1
-                ? "opacity-0 pointer-events-none"
-                : "opacity-85 hover:opacity-100 hover:scale-105 active:scale-95 shadow-md"
-            }`}
-            aria-label="Next Chapter"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.75}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
+          {/* Subtle Creator Credit Signature by Nduy */}
+          <div className="text-center pt-2">
+            <p className="font-serif italic text-[10px] sm:text-xs text-[#78726A]/85 tracking-[0.2em] uppercase">
+              written, designed & made with love by nduy
+            </p>
+          </div>
         </div>
       </div>
     </main>
   );
 }
+
 
