@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { finalPageContent } from "@/data/content";
 
@@ -9,11 +9,40 @@ export default function FinalPage() {
   const [noIndex, setNoIndex] = useState(0);
   const [noPosition, setNoPosition] = useState({ x: 0, y: 0 });
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const noButtonRef = useRef<HTMLButtonElement>(null);
+
   const handleNoHover = () => {
     setNoIndex((prev) => (prev + 1) % finalPageContent.noHoverTexts.length);
-    const randomX = (Math.random() - 0.5) * 80;
-    const randomY = (Math.random() - 0.5) * 50;
-    setNoPosition({ x: randomX, y: randomY });
+
+    if (containerRef.current && noButtonRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const buttonRect = noButtonRef.current.getBoundingClientRect();
+
+      const unTransformedLeft = buttonRect.left - noPosition.x;
+      const unTransformedRight = buttonRect.right - noPosition.x;
+      const unTransformedTop = buttonRect.top - noPosition.y;
+      const unTransformedBottom = buttonRect.bottom - noPosition.y;
+
+      const padding = 20;
+
+      const minX = containerRect.left + padding - unTransformedLeft;
+      const maxX = containerRect.right - padding - unTransformedRight;
+      const minY = containerRect.top + padding - unTransformedTop;
+      const maxY = containerRect.bottom - padding - unTransformedBottom;
+
+      const rawX = (Math.random() - 0.5) * 120;
+      const rawY = (Math.random() - 0.5) * 80;
+
+      const clampedX = minX > maxX ? 0 : Math.max(minX, Math.min(maxX, rawX));
+      const clampedY = minY > maxY ? 0 : Math.max(minY, Math.min(maxY, rawY));
+
+      setNoPosition({ x: clampedX, y: clampedY });
+    } else {
+      const randomX = (Math.random() - 0.5) * 60;
+      const randomY = (Math.random() - 0.5) * 40;
+      setNoPosition({ x: randomX, y: randomY });
+    }
   };
 
   const handleYes = () => {
@@ -57,7 +86,10 @@ export default function FinalPage() {
       </div>
 
       {/* RIGHT / BOTTOM PAGE: Editorial Paper Spread */}
-      <div className="w-full md:w-1/2 h-[58%] md:h-full bg-[#F5F0E6] text-[#1A1817] p-3.5 sm:p-6 md:p-12 flex flex-col justify-between paper-texture-fine overflow-y-auto">
+      <div
+        ref={containerRef}
+        className="w-full md:w-1/2 h-[58%] md:h-full bg-[#F5F0E6] text-[#1A1817] p-3.5 sm:p-6 md:p-12 flex flex-col justify-between paper-texture-fine overflow-y-auto overflow-x-hidden relative"
+      >
         {/* Top header & divider */}
         <div>
           <div className="flex items-center justify-between text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] text-[#78726A] font-sans pb-1.5 sm:pb-2">
@@ -81,23 +113,29 @@ export default function FinalPage() {
               </div>
 
               {/* Minimal Editorial Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 pt-2 relative min-h-[65px] sm:min-h-[70px]">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 pt-2 relative min-h-[70px] sm:min-h-[80px] w-full max-w-full px-2 overflow-visible">
                 {/* YES BUTTON */}
                 <button
                   onClick={handleYes}
-                  className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#1A1817] text-[#F5F0E6] font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-[#2C2825] transition-all duration-300 active:scale-95 cursor-pointer shadow-md"
+                  className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#1A1817] text-[#F5F0E6] font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-[#2C2825] transition-all duration-300 active:scale-95 cursor-pointer shadow-md z-10"
                 >
                   Yes 🤍
                 </button>
 
                 {/* NO BUTTON (playful runaway) */}
                 <button
+                  ref={noButtonRef}
                   onMouseEnter={handleNoHover}
+                  onTouchStart={(e) => {
+                    e.preventDefault();
+                    handleNoHover();
+                  }}
                   onClick={handleNoHover}
                   style={{
                     transform: `translate(${noPosition.x}px, ${noPosition.y}px)`,
+                    touchAction: "manipulation",
                   }}
-                  className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border border-[#78726A]/40 text-[#78726A] font-sans text-[9px] sm:text-[11px] tracking-wider uppercase hover:border-[#1A1817] transition-transform duration-200 cursor-pointer"
+                  className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-[#78726A]/40 text-[#78726A] font-sans text-[9px] sm:text-[11px] tracking-wider uppercase hover:border-[#1A1817] transition-transform duration-200 cursor-pointer select-none max-w-[90vw] sm:max-w-full z-20"
                 >
                   {finalPageContent.noHoverTexts[noIndex]}
                 </button>

@@ -25,7 +25,7 @@ export const chapterTwoContent = {
   title: "Before I Realized",
   quote:
     "I cannot pinpoint the exact moment things began to shift. It was gradual, like the quiet way evening turns into night. Suddenly, checking my phone for your messages became the highlight of my day. Without planning to, I found myself holding on to every conversation, realizing that talking to you had quietly become the part of my day I looked forward to most.",
-  imageSrc: "/images/hands.jpg",
+  imageSrc: "/images/cute.png",
 };
 
 export const chapterThreeContent = {
@@ -34,7 +34,7 @@ export const chapterThreeContent = {
   title: "The Little Conversations",
   quote:
     "What started as brief exchanges slowly grew into hours of talking about everything and nothing at all. Random thoughts, silly jokes, late-night stories, and topics that didn’t seem important to anyone else somehow became my favorite moments. It wasn’t just what we talked about — it was the ease of being with you, where even the quietest moments felt comfortable and right.",
-  imageSrc: "/images/hands.jpg",
+  imageSrc: "/images/kiss.png",
 };
 
 export const chapterFourContent = {
@@ -42,14 +42,14 @@ export const chapterFourContent = {
   chapterLabel: "CHAPTER 4",
   title: "The Details I Carry",
   quote:
-    "Over time, I started noticing all the small things that make you who you are. The way your voice brightens when you get excited, your endless yapping about things you love, the thoughtful details you always notice, and even your funny moody little moments. All of these pieces came together to show me someone truly special — someone I couldn’t imagine my days without.",
-  imageSrc: "/images/hands.jpg",
+    "Over time, I started noticing all the small things that make you who you are. The way your voice brightens when you get excited, your endless yapping about things you love, the thoughtful details you always notice, and even your funny moody little moments. All of these pieces came together to show me someone truly special — someone I couldn’t imagine my days without. Thank you for waiting for me until now, nduy.",
+  imageSrc: "/images/sunset.png",
 };
 
 export const finalPageContent = {
   chapterNumber: "05",
   chapterLabel: "FINAL CHAPTER",
-  preText: "After all of these moments, there is only one question left to ask...",
+  preText: "Thank you for waiting for me until now, nduy. After all of these moments, there is only one question left to ask...",
   question: "Will you be my girlfriend?",
   noHoverTexts: [
     "Are you sure?",
@@ -59,7 +59,7 @@ export const finalPageContent = {
     "Think again ❤️",
   ],
   successTitle: "SHE SAID YES!",
-  successSubtitle: "And just like that, the answer was yes. 🤍",
+  successSubtitle: "She said yes! 🤍",
   imageSrc: "/images/flower.png",
 };
 

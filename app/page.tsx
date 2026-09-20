@@ -327,10 +327,10 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Subtle Creator Credit Signature by Nduy */}
+          {/* Creator Credit Signature */}
           <div className="text-center pt-2">
             <p className="font-serif italic text-[10px] sm:text-xs text-[#78726A]/85 tracking-[0.2em] uppercase">
-              written, designed & made with love by nduy
+              made with love by Kindi
             </p>
           </div>
         </div>
