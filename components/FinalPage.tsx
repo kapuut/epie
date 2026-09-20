@@ -80,8 +80,7 @@ export default function FinalPage() {
         {/* Bottom detail */}
         <div className="relative z-10 text-center pb-0.5 sm:pb-0">
           <p className="font-serif italic text-[9px] sm:text-xs text-white/75 truncate px-1">
-            always and forever
-          </p>
+                  </p>
         </div>
       </div>
 
