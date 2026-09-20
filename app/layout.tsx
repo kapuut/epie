@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "For Epie — A Little Book of How It All Began",
-  description: "A vintage interactive storybook made with love for Epie.",
+  title: "Hello Epie",
+  description: "Can you please open this?.",
   openGraph: {
-    title: "For Epie — A Little Book of How It All Began",
-    description: "A vintage interactive storybook made with love for Epie.",
+    title: "Hello Epie",
+    description: "Can you please open this?.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hello Epie",
+    description: "Can you please open this?.",
   },
 };
 
