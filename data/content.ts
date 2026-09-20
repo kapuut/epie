@@ -3,8 +3,8 @@
 // ─────────────────────────────────────────────
 
 export const bookCoverContent = {
-  title: "FOR EPIE",
-  subtitle: "A little book of how it all began.",
+  title: "HAI EPIE",
+  subtitle: "Can you please open this?.",
   cta: "CLICK HERE",
   coverImage: "/images/couple2.jpg",
 };
