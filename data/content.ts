@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────
 
 export const bookCoverContent = {
-  title: "HAI EPIE",
+  title: "Hello Epie",
   subtitle: "Can you please open this?.",
   cta: "CLICK HERE",
   coverImage: "/images/couple2.jpg",
