@@ -65,9 +65,6 @@ export default function FinalPage() {
 
         {/* Top header */}
         <div className="relative z-10 text-center border-b border-white/20 pb-1 sm:pb-3">
-          <span className="font-sans text-[8px] sm:text-[10px] tracking-[0.25em] sm:tracking-[0.3em] uppercase text-white/80">
-            {finalPageContent.chapterLabel}
-          </span>
         </div>
 
         {/* Center title */}
@@ -92,7 +89,6 @@ export default function FinalPage() {
         {/* Top header & divider */}
         <div>
           <div className="flex items-center justify-between text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] text-[#78726A] font-sans pb-1.5 sm:pb-2">
-            <span>{finalPageContent.chapterLabel}</span>
             <span>{finalPageContent.chapterNumber}</span>
           </div>
           <div className="w-full h-[1px] bg-[#1A1817]/15 mb-2.5 sm:mb-6" />
