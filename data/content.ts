@@ -14,7 +14,7 @@ export const chapterOneContent = {
   chapterLabel: "CHAPTER 1",
   title: "The Way We Met",
   quote:
-    "I met her unexpectedly, in a moment I never thought would become the beginning of something so important to me. There was no grand introduction, no sign telling me that this person would one day mean so much. It simply started with a simple DM asking for the 100 pap you owed me. Unexpected, right? I know, it was not exactly the usual way for a love story to begin, but somehow, it became ours.",
+    "I met her unexpectedly, in a moment I never thought would become the beginning of something so important to me. There was no grand introduction, no sign telling me that this person would one day mean so much. It simply started with a simple DM asking for the 100 pap you owed me. Unexpected, right? I know.",
   timestamp: "Where our story began.",
   imageSrc: "/images/couple1.jpg",
 };
