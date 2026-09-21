@@ -210,6 +210,22 @@ body {
   animation: editorial-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes password-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-password-shake {
+  animation: password-shake 0.42s ease-in-out;
+}
+
 ::selection {
   background-color: rgba(44, 40, 37, 0.15);
   color: var(--color-ink-dark);

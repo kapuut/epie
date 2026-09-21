@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, TouchEvent } from "react";
+import PasswordGate from "@/components/PasswordGate";
 import BookCover from "@/components/BookCover";
 import ChapterOne from "@/components/ChapterOne";
 import ChapterTwo from "@/components/ChapterTwo";
@@ -9,6 +10,7 @@ import ChapterFour from "@/components/ChapterFour";
 import FinalPage from "@/components/FinalPage";
 
 export default function Home() {
+  const [isUnlocked, setIsUnlocked] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [isTurning, setIsTurning] = useState(false);
   const [turnDirection, setTurnDirection] = useState<"next" | "prev" | null>(null);
@@ -115,11 +117,9 @@ export default function Home() {
     touchEndY.current = null;
   };
 
-  const getChapterIndicator = () => {
-    if (currentPage === 0) return "THE STORY OF US";
-    if (currentPage === 5) return "FINAL CHAPTER • 05";
-    return `CHAPTER 0${currentPage} • 0${currentPage}`;
-  };
+  if (!isUnlocked) {
+    return <PasswordGate onUnlock={() => setIsUnlocked(true)} />;
+  }
 
   return (
     <main className="min-h-screen w-full flex items-center justify-center p-2 sm:p-6 md:p-10 relative overflow-hidden select-none">
@@ -295,11 +295,6 @@ export default function Home() {
               </svg>
             </button>
 
-            {/* Editorial Page Indicator */}
-            <div className="flex items-center space-x-3 sm:space-x-4 bg-[#1A1817]/85 text-[#F5F0E6] backdrop-blur-md px-4 sm:px-5 py-2 rounded-full border border-white/15 text-[9px] sm:text-xs tracking-[0.25em] font-sans uppercase shadow-md">
-              <span>{getChapterIndicator()}</span>
-            </div>
-
             {/* Right Arrow Button */}
             <button
               onClick={() => triggerPageTurn("next")}
@@ -330,7 +325,7 @@ export default function Home() {
           {/* Creator Credit Signature */}
           <div className="text-center pt-2">
             <p className="font-serif italic text-[10px] sm:text-xs text-[#78726A]/85 tracking-[0.2em] uppercase">
-              made with love by Kindi
+              by Kindi
             </p>
           </div>
         </div>
