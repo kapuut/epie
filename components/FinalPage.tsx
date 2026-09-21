@@ -114,7 +114,7 @@ export default function FinalPage() {
                   onClick={handleYes}
                   className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#1A1817] text-[#F5F0E6] font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-[#2C2825] transition-all duration-300 active:scale-95 cursor-pointer shadow-md z-10"
                 >
-                  Yes 🤍
+                  Yes
                 </button>
 
                 {/* NO BUTTON (playful runaway) */}
