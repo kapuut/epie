@@ -35,9 +35,6 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
     >
       <div className="w-full max-w-md text-center animate-editorial-fade">
         <div className="w-10 h-[1px] bg-[#1A1817]/25 mx-auto mb-6" />
-        <h1 className="font-serif text-3xl sm:text-5xl font-normal leading-tight">
-          Before we begin
-        </h1>
         <p className="font-serif italic text-base sm:text-lg text-[#78726A] leading-relaxed mt-5 max-w-xs mx-auto">
           Please enter the password here.
         </p>
