@@ -64,7 +64,7 @@ export default function ChapterOne() {
 
         {/* Page footer */}
         <div className="pt-2 sm:pt-6 border-t border-[#1A1817]/10 flex items-center justify-between text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] text-[#78726A] uppercase font-sans mt-2">
-          <span className="truncate max-w-[120px] sm:max-w-none">A CASUAL START</span>
+          <span className="truncate max-w-[120px] sm:max-w-none">{chapterOneContent.title}</span>
           <span>{chapterOneContent.chapterNumber}</span>
         </div>
       </div>

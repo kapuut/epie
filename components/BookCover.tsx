@@ -32,13 +32,6 @@ export default function BookCover({ onOpen }: BookCoverProps) {
 
       {/* Content Container */}
       <div className="relative z-20 w-full max-w-sm sm:max-w-md mx-auto text-center px-4 sm:px-8 py-8 sm:py-12 flex flex-col items-center justify-between h-full">
-        {/* Top metadata */}
-        <div className="space-y-1 pt-2 sm:pt-4">
-          <p className="text-[9px] sm:text-xs tracking-[0.35em] uppercase text-white/75 font-sans">
-            PHOTOGRAPH & MEMOIR
-          </p>
-        </div>
-
         {/* Center Title */}
         <div className="space-y-3 sm:space-y-4 my-auto py-4 sm:py-8">
           <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-light tracking-[0.15em] text-white uppercase drop-shadow-md">

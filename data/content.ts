@@ -12,7 +12,7 @@ export const bookCoverContent = {
 export const chapterOneContent = {
   chapterNumber: "01",
   chapterLabel: "CHAPTER 1",
-  title: "A Casual Start",
+  title: "A Little Story: How We Met",
   quote:
     "I met her unexpectedly, in a moment I never thought would become the beginning of something so important to me. There was no grand introduction, no sign telling me that this person would one day mean so much. It simply started with a simple DM asking for the 100 pap you owed me ",
   timestamp: "Where our story began.",
@@ -52,14 +52,14 @@ export const finalPageContent = {
   preText: "Thank you for waiting for me until now, Epie. After all of these moments, there is only one question left to ask...",
   question: "Will you be my girlfriend?",
   noHoverTexts: [
-    "Are you sure?",
-    "Nice try 😉",
-    "You can't escape this",
-    "That's not an option",
-    "Think again ❤️",
+    "Are you suuure? 👀",
+    "Nice try, Epie 😌",
+    "That button is just for decoration",
+    "Oops, that's not an option 🤭",
+    "Think again, silly ❤️",
   ],
   successTitle: "SHE SAID YES!",
-  successSubtitle: "She said yes! 🤍",
+  successSubtitle: "Thank you so much, Epie. I love you. 🤍",
   imageSrc: "/images/flower.png",
 };
 
