@@ -15,7 +15,7 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (password === "Sunset") {
+    if (password === "Sunset" || password === "sunset") {
       setIsLeaving(true);
       window.setTimeout(onUnlock, 450);
       return;
