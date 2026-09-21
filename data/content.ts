@@ -58,8 +58,8 @@ export const finalPageContent = {
     "Oops, that's not an option",
     "Think again, silly",
   ],
-  successTitle: "SHE SAID YES!",
-  successSubtitle: "Thank you so much, Epie. I love you.",
+  successTitle: "Hello there, girlfriend",
+  successSubtitle: "I love you, Epie. thank you for saying yes to us.",
   imageSrc: "/images/flower.png",
 };
 

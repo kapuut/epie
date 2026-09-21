@@ -140,7 +140,7 @@ export default function FinalPage() {
             /* SUCCESS CONFESSION - Centered message */
             <div className="space-y-3 sm:space-y-6 animate-editorial-fade py-3 sm:py-6 text-center">
               <div className="w-8 h-[1px] bg-[#1A1817]/20 mx-auto" />
-              <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl font-normal text-[#1A1817] tracking-wider uppercase leading-tight">
+              <h1 className="font-serif text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-normal text-[#1A1817] tracking-[-0.06em] leading-[0.82]">
                 {finalPageContent.successTitle}
               </h1>
               <p className="font-serif italic text-base sm:text-2xl md:text-3xl text-[#78726A] max-w-xs sm:max-w-md mx-auto leading-relaxed">
